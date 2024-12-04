@@ -1,6 +1,7 @@
 package com.zzz.todolist.entity;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,7 +30,7 @@ public class ListInfo {
 
     @PrePersist
     protected void onCreate() {
-        createTime = LocalDateTime.now();
+        createTime = LocalDateTime.now(ZoneId.of("Asia/Shanghai"));
     }
 
     // Getters and Setters
