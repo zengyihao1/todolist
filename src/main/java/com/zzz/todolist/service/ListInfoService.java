@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.zzz.todolist.entity.ListInfo;
 import com.zzz.todolist.repository.ListInfoRepository;
@@ -38,5 +39,25 @@ public class ListInfoService {
     // 删除待办事项
     public void delete(Long id) {
         listInfoRepository.deleteById(id);
+    }
+    
+    // 添加新方法：根据类型查询待办事项
+    public List<ListInfo> findByListType(String listType) {
+        return listInfoRepository.findByListType(listType);
+    }
+    
+    // 重置重复执行的任务状态
+    @Transactional
+    public void resetRepeatTasks() {
+        List<ListInfo> repeatTasks = listInfoRepository.findByIsRepeatTrue();
+        for (ListInfo task : repeatTasks) {
+            task.setStatus(false);
+        }
+        listInfoRepository.saveAll(repeatTasks);
+    }
+    
+    // 添加新方法：查询所有重复执行的任务
+    public List<ListInfo> findRepeatTasks() {
+        return listInfoRepository.findByIsRepeatTrue();
     }
 } 

@@ -49,6 +49,18 @@ public class ListInfoController {
         return listInfoService.findById(id)
                 .map(existingItem -> {
                     listInfo.setId(id);
+                    // 如果没有传入listType，使用原有的listType
+                    if (listInfo.getListType() == null) {
+                        listInfo.setListType(existingItem.getListType());
+                    }
+                    // 如果没有传入creator，使用原有的creator
+                    if (listInfo.getCreator() == null) {
+                        listInfo.setCreator(existingItem.getCreator());
+                    }
+                    // 如果没有传入content，使用原有的content
+                    if (listInfo.getContent() == null) {
+                        listInfo.setContent(existingItem.getContent());
+                    }
                     return ResponseEntity.ok(listInfoService.update(listInfo));
                 })
                 .orElse(ResponseEntity.notFound().build());
@@ -63,5 +75,11 @@ public class ListInfoController {
                     return ResponseEntity.ok().<Void>build();
                 })
                 .orElse(ResponseEntity.notFound().build());
+    }
+    
+    // 添加新接口：根据类型获取待办事项
+    @GetMapping("/type/{listType}")
+    public ResponseEntity<List<ListInfo>> findByListType(@PathVariable String listType) {
+        return ResponseEntity.ok(listInfoService.findByListType(listType));
     }
 } 

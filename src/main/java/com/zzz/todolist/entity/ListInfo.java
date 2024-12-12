@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name = "list_info")
 public class ListInfo {
@@ -21,9 +23,16 @@ public class ListInfo {
     @Column(nullable = false)
     private String content;
     
+    @Column(name = "list_type", nullable = false)
+    private String listType;
+    
     private Boolean status = false;
     
+    @Column(name = "is_repeat")
+    private Boolean isRepeat = false;
+    
     @Column(name = "create_time", updatable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime createTime;
     
     private String creator;
@@ -72,5 +81,21 @@ public class ListInfo {
 
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    public String getListType() {
+        return listType;
+    }
+
+    public void setListType(String listType) {
+        this.listType = listType;
+    }
+
+    public Boolean getIsRepeat() {
+        return isRepeat;
+    }
+
+    public void setIsRepeat(Boolean isRepeat) {
+        this.isRepeat = isRepeat;
     }
 } 
